@@ -4,19 +4,20 @@
 
 #pragma once
 
+#include <memory>
 #include "IBitmapIterator.h"
 #include <iosfwd>
 #include <string>
 
 class IBitmapDecoder;
-typedef std::sharted_ptr<IBitmapDecoder> HBitmapDecoder;
+typedef std::shared_ptr<IBitmapDecoder> HBitmapDecoder;
 
 class IBitmapDecoder
 {
 public:
   virtual ~IBitmapDecoder() {}
 
-  virtual HBitmapDecoder clone (std::istream& sourceStream) = 0;
+  virtual HBitmapDecoder clone (std::istream& HsourceStream) = 0;
   virtual HBitmapIterator createIterator() = 0;
   virtual std::string getMimeType() const = 0;
   virtual bool isSupported(const std::string& firstChunk) const = 0;

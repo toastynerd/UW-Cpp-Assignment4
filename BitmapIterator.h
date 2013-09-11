@@ -3,13 +3,13 @@
 //BitmapIterator.h
 
 #pragma once
+
 #include "IBitmapIterator.h"
 #include "Bitmap.h"
 
 class BitmapIterator : public IBitmapIterator
 {
 public:
-  BitmapIterator();
   BitmapIterator(const HBitmap& bitmap);
 
   virtual void nextScanLine();
@@ -22,7 +22,7 @@ public:
   virtual int getBitmapHeight() const;
 private:
   HBitmap myBitmap;
-  Bitmap::ScanLineIterator my ScanLine;
+  Bitmap::ScanLineIterator myScanLine;
   Bitmap::ColorIterator myColor;
 };
 

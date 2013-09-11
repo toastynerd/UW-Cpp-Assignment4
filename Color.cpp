@@ -1,32 +1,49 @@
-//Tyler Morgan
-//Color.cpp
-
 #include "Color.h"
 
-namespace Bitmap
+Color::Color(
+    const Binary::Byte& red,
+    const Binary::Byte& green,
+    const Binary::Byte& blue)
+    : myRed(red),
+    myGreen(green),
+    myBlue(blue)
 {
-Color::Color() {}
-
-
-Color& Color::operator =(Color const& original)
-{
-  this->blue = original.blue;
-  this->green = original.green;
-  this->red = original.red;
-  return *this;
 }
 
-void Color::read(std::istream& inputStream)
+Color Color::read(std::istream& sourceStream)
 {
-  blue = Binary::Byte::read(inputStream);
-  green = Binary::Byte::read(inputStream);
-  red = Binary::Byte::read(inputStream);
+    Color color(0, 0, 0);
+    color.myBlue = Binary::Byte::read(sourceStream);
+    color.myGreen = Binary::Byte::read(sourceStream);
+    color.myRed = Binary::Byte::read(sourceStream);
+    return color;
 }
 
-void Color::write(std::ostream& destinationStream)
+void Color::write(std::ostream& destinationStream) const
 {
-  blue.write(destinationStream);
-  green.write(destinationStream);
-  red.write(destinationStream);
+    myBlue.write(destinationStream);
+    myGreen.write(destinationStream);
+    myRed.write(destinationStream);
 }
+
+Binary::Byte Color::getRed() const
+{
+    return myRed;
 }
+
+Binary::Byte Color::getGreen() const
+{
+    return myGreen;
+}
+
+Binary::Byte Color::getBlue() const
+{
+    return myBlue;
+}
+
+std::ostream& operator<<(std::ostream& os, const Color& color)
+{
+    color.write(os);
+    return os;
+}
+

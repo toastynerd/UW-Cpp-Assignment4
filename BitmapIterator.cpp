@@ -4,11 +4,8 @@
 
 #include "BitmapIterator.h"
 
-BitmapIterator::BitmapIterator()
-{
-}
 
-BitmapIterator::BitmapIterator(const Hbitmap& bitmap)
+BitmapIterator::BitmapIterator(const HBitmap& bitmap)
   :myBitmap(bitmap),
   myScanLine(bitmap->begin()),
   myColor(myScanLine->begin())

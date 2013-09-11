@@ -1,27 +1,25 @@
-//Tyler Morgan
-//Color.h
-
 #pragma once
-#include "Binary.h"
 
-namespace Bitmap
+#include "Byte.h"
+
+class Color
 {
-  class Color
-  {
-  public:
-    Color();
-    Color& operator =(Color const& original);
-    void read(std::istream& inputStream);
-    void write(std::ostream& destinationStream);
+public:
+    Color(const Binary::Byte& red,
+          const Binary::Byte& green,
+          const Binary::Byte& blue);
+    
+    static Color read(std::istream& sourceStream);
+    void write(std::ostream& destinationStream) const;
 
-  private:
-    Binary::Byte blue;
-    Binary::Byte green;
-    Binary::Byte red;
-  };
+    Binary::Byte getRed() const;
+    Binary::Byte getGreen() const;
+    Binary::Byte getBlue() const;
 
-  class ScanLine
-  {
+private:
+    Binary::Byte myRed;
+    Binary::Byte myGreen;
+    Binary::Byte myBlue;
+};
 
-  };
-}
+std::ostream& operator<<(std::ostream& os, const Color& color);

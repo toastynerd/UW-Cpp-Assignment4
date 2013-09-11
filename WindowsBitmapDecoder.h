@@ -15,7 +15,7 @@ public:
   virtual HBitmapDecoder clone(std::istream& sourceStream);
   virtual HBitmapIterator createIterator();
   virtual std::string getMimeType() const;
-  virtual bool isSupporter(const std::string& firstChunk) const;
+  virtual bool isSupported(const std::string& firstChunk) const;
 
 private: 
   std::istream& mySourceStream;

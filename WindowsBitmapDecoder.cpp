@@ -2,8 +2,9 @@
 //UW CPP Quarter 3 Assignment 4
 //WindowsBitmapDecoder.cpp
 
+#include <stdexcept>
 #include "WindowsBitmapDecoder.h"
-#include "WidowsBitmapHeader.h"
+#include "WindowsBitmapHeader.h"
 #include "Bitmap.h"
 #include "BitmapIterator.h"
 #include <sstream>
@@ -39,7 +40,7 @@ HBitmapIterator WindowsBitmapDecoder::createIterator()
   WindowsBitmapHeader bitmapHeader;
   bitmapHeader.readFileHeader(mySourceStream);
   bitmapHeader.readInfoHeader(mySourceStream);
-  Hbitmap bitmap(new Bitmap(bitmapHeader.getBitmapWidth(),
+  HBitmap bitmap(new Bitmap(bitmapHeader.getBitmapWidth(),
                             bitmapHeader.getBitmapHeight(),
                             mySourceStream));
   return HBitmapIterator(new BitmapIterator(bitmap));
