@@ -16,7 +16,7 @@ void CodecLibrary::registerDecoder(const HBitmapDecoder& decoder)
 
 HBitmapDecoder CodecLibrary::createDecoder(std::istream& sourceStream)
 {
-
+  return HBitmapDecoder();
 }
 
 HBitmapDecoder CodecLibrary::createDecoder(std::string const& mimeType, std::istream& sourceStream)
@@ -28,7 +28,7 @@ HBitmapDecoder CodecLibrary::createDecoder(std::string const& mimeType, std::ist
       return myDecoders[x]->clone(sourceStream);
     }
   }
-
+  return HBitmapDecoder();
 }
 
 HBitmapEncoder CodecLibrary::createEncoder(std::string const& mimeType, const HBitmapIterator& bitmapIterator)
@@ -40,6 +40,7 @@ HBitmapEncoder CodecLibrary::createEncoder(std::string const& mimeType, const HB
       return myEncoders[x]->clone(bitmapIterator);
     }
   }
+  return HBitmapEncoder();
 }
 
 int CodecLibrary::numberOfEncoders()

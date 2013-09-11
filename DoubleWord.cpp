@@ -29,37 +29,37 @@ namespace Binary
 
     void DoubleWord::writeLittleEndian(std::ostream& destinationStream) const
     {
-#ifdef Little_Endian_
-        writeNativeOrder(destinationStream);
-#else
+#ifdef Big_Endian
         writeSwappedOrder(destinationStream);
+#else
+        writeNativeOrder(destinationStream);
 #endif
     }
 
     void DoubleWord::writeBigEndian(std::ostream& destinationStream) const
     {
-#ifdef Little_Endian_
-        writeSwappedOrder(destinationStream);
-#else
+#ifdef Big_Endian_
         writeNativeOrder(destinationStream);
+#else
+        writeSwappedOrder(destinationStream);
 #endif
     }
 
     DoubleWord DoubleWord::readBigEndian(std::istream& sourceStream)
     {
-#ifdef Little_Endian_
-        return readSwappedOrder(sourceStream);
-#else
+#ifdef Big_Endian_
         return readNativeOrder(sourceStream);
+#else
+        return readSwappedOrder(sourceStream);
 #endif
     }
 
     DoubleWord DoubleWord::readLittleEndian(std::istream& sourceStream)
     {
-#ifdef Little_Endian_
-        return readNativeOrder(sourceStream);
-#else
+#ifdef Big_Endian_
         return readSwappedOrder(sourceStream);
+#else
+        return readNativeOrder(sourceStream);
 #endif
     }
 

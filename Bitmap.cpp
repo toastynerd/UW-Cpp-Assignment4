@@ -2,10 +2,10 @@
 
 namespace
 {
-    unsigned int numberOfPadBytes(Binary::DoubleWord widthInPixels)
+    int numberOfPadBytes(int widthInPixels)
     {
-        unsigned int pad = 0;
-        unsigned int remainder = (widthInPixels * 3) % 4;
+        int pad = 0;
+        int remainder = (widthInPixels * 3) % 4;
         
         if (remainder > 0)
         {
@@ -16,9 +16,7 @@ namespace
     }
 }
 
-Bitmap::Bitmap(Binary::DoubleWord width,
-               Binary::DoubleWord height,
-               std::istream& sourceStream) :
+Bitmap::Bitmap(int width, int height, std::istream& sourceStream) :
 myWidth(width),
 myHeight(height),
 myNumberOfPadBytes(numberOfPadBytes(width))
@@ -26,17 +24,17 @@ myNumberOfPadBytes(numberOfPadBytes(width))
     read(sourceStream);
 }
 
-Binary::DoubleWord Bitmap::getWidth() const
+int Bitmap::getWidth() const
 {
     return myWidth;
 }
 
-Binary::DoubleWord Bitmap::getHeight() const
+int Bitmap::getHeight() const
 {
     return myHeight;
 }
 
-unsigned int Bitmap::getNumberOfPadBytes() const
+int Bitmap::getNumberOfPadBytes() const
 {
     return myNumberOfPadBytes;
 }
@@ -54,6 +52,7 @@ Bitmap::ScanLineIterator Bitmap::end()
 void Bitmap::read(std::istream& sourceStream)
 {
     myScanLines.clear();
+    
     for (int row = 0; row < myHeight; ++row)
     {
         ScanLine scanLine;
@@ -64,7 +63,7 @@ void Bitmap::read(std::istream& sourceStream)
         }
 
         // Read pad bytes
-        for (unsigned int pad = 0; pad < myNumberOfPadBytes; ++pad)
+        for (int pad = 0; pad < myNumberOfPadBytes; ++pad)
         {
             Binary::Byte::read(sourceStream);
         }
@@ -87,7 +86,7 @@ void Bitmap::write(std::ostream& destinationStream) const
         }
 
         // Write pad bytes
-        for (unsigned int pad = 0; pad < myNumberOfPadBytes; ++pad)
+        for (int pad = 0; pad < myNumberOfPadBytes; ++pad)
         {
             Binary::Byte(0).write(destinationStream);
         }

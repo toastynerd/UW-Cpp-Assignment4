@@ -39,7 +39,42 @@ TEST(Decoder, CodecLibrary)
   CHECK(myDecoder);
 }
 
+TEST(CreateIterator, CodecLibrary)
+{
+  CodecLibrary myCodecLibrary;
+
+  myCodecLibrary.registerEncoder(HBitmapEncoder(new WindowsBitmapEncoder));
+  myCodecLibrary.registerDecoder(HBitmapDecoder(new WindowsBitmapDecoder));
+
+  std::ifstream inFile("basic.bmp", std::ios::binary);
+
+  HBitmapDecoder myDecoder = myCodecLibrary.createDecoder("image/x-ms-bmp",inFile);
+
+  HBitmapIterator myIterator = myDecoder->createIterator();
+
+  CHECK(myIterator);
+}
+
 TEST(Encoder, CodecLibrary)
 {
+  CodecLibrary myCodecLibrary;
 
+  myCodecLibrary.registerEncoder(HBitmapEncoder(new WindowsBitmapEncoder));
+  myCodecLibrary.registerDecoder(HBitmapDecoder(new WindowsBitmapDecoder));
+
+  std::ifstream inFile("basic.bmp", std::ios::binary);
+
+  HBitmapDecoder myDecoder = myCodecLibrary.createDecoder("image/x-ms-bmp",inFile);
+
+  HBitmapIterator myIterator = myDecoder->createIterator();
+
+  HBitmapEncoder myEncoder = myCodecLibrary.createEncoder("image/x-ms-bmp", myIterator);
+
+  CHECK(myEncoder);
+
+  std::ofstream outFile("reencoded.bmp", std::ios::binary);
+
+  myEncoder->writeToStream(outFile);
+
+  CHECK(outFile);
 }

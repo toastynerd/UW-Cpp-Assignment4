@@ -29,37 +29,37 @@ namespace Binary
 
     void Word::writeLittleEndian(std::ostream& destinationStream) const
     {
-#ifdef Little_Endian_
-        writeNativeOrder(destinationStream);
-#else
+#ifdef Big_Endian_
         writeSwappedOrder(destinationStream);
+#else
+        writeNativeOrder(destinationStream);
 #endif
     }
 
     void Word::writeBigEndian(std::ostream& destinationStream) const
     {
-#ifdef Little_Endian_
-        writeSwappedOrder(destinationStream);
-#else
+#ifdef Big_Endian_
         writeNativeOrder(destinationStream);
+#else
+        writeSwappedOrder(destinationStream);
 #endif
     }
 
     Word Word::readBigEndian(std::istream& sourceStream)
     {
-#ifdef Little_Endian_
-        return readSwappedOrder(sourceStream);
-#else
+#ifdef Big_Endian_
         return readNativeOrder(sourceStream);
+#else
+        return readSwappedOrder(sourceStream);
 #endif
     }
 
     Word Word::readLittleEndian(std::istream& sourceStream)
     {
-#ifdef Little_Endian_
-        return readNativeOrder(sourceStream);
-#else
+#ifdef Big_Endian_
         return readSwappedOrder(sourceStream);
+#else
+        return readNativeOrder(sourceStream);
 #endif
     }
 
@@ -68,8 +68,8 @@ namespace Binary
         Word word;
         Byte* bytes = reinterpret_cast<Byte*>(&word);
         
-        bytes[0] = Byte::read(sourceStream);
-        bytes[1] = Byte::read(sourceStream);
+        bytes[0] = sourceStream.get();
+        bytes[1] = sourceStream.get();
         
         return word;
     }
@@ -79,8 +79,8 @@ namespace Binary
         Word word;
         Byte* bytes = reinterpret_cast<Byte*>(&word);
         
-        bytes[1] = Byte::read(sourceStream);
-        bytes[0] = Byte::read(sourceStream);
+        bytes[1] = sourceStream.get();
+        bytes[0] = sourceStream.get();
         
         return word;
     }

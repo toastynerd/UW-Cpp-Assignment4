@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Byte.h"
-#include "DoubleWord.h"
 #include "Word.h"
+#include "DoubleWord.h"
 #include <iostream>
 
 class WindowsBitmapHeader
