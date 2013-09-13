@@ -31,13 +31,17 @@ void WindowsBitmapEncoder::writeToStream(std::ostream& outputStream)
   header.setBitmapHeight(myBitmapIterator->getBitmapHeight());
 
   header.writeFileHeader(outputStream);
+  header.writeFileHeader(std::cout);
   header.writeInfoHeader(outputStream);
+  header.writeInfoHeader(std::cout);
+
+  std::cout << std::endl;
   
   while(! myBitmapIterator->isEndOfImage())
   {
     while(! myBitmapIterator->isEndOfScanLine())
     {
-      outputStream << myBitmapIterator->getColor();
+      myBitmapIterator->getColor().write(outputStream);
       myBitmapIterator->nextPixel();
     }
     myBitmapIterator->nextScanLine();

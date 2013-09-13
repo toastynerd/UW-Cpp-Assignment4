@@ -7,6 +7,8 @@
 #include "../WindowsBitmapEncoder.h"
 #include "../WindowsBitmapDecoder.h"
 #include "../BitmapIterator.h"
+#include "../GrayscaleDecorator.h"
+#include "../ReverseColorDecorator.h"
 // include the header file for the class you are testing.
 
 // each test function should be small and test a single capability
@@ -28,27 +30,29 @@ TEST(CodecLibrarySetup, CodecLibrary)
 
 TEST(Decoder, CodecLibrary)
 {
-  CodecLibrary myCodecLibrary;
+  std::shared_ptr<CodecLibrary> myCodecLibrary;
+  myCodecLibrary.reset(new CodecLibrary);
 
-  myCodecLibrary.registerEncoder(HBitmapEncoder(new WindowsBitmapEncoder));
-  myCodecLibrary.registerDecoder(HBitmapDecoder(new WindowsBitmapDecoder));
+  myCodecLibrary->registerEncoder(HBitmapEncoder(new WindowsBitmapEncoder));
+  myCodecLibrary->registerDecoder(HBitmapDecoder(new WindowsBitmapDecoder));
 
   std::ifstream inFile("basic.bmp", std::ios::binary);
 
-  HBitmapDecoder myDecoder = myCodecLibrary.createDecoder("image/x-ms-bmp",inFile);
+  HBitmapDecoder myDecoder = myCodecLibrary->createDecoder("image/x-ms-bmp",inFile);
   CHECK(myDecoder);
 }
 
 TEST(CreateIterator, CodecLibrary)
 {
-  CodecLibrary myCodecLibrary;
+  std::shared_ptr<CodecLibrary> myCodecLibrary;
+  myCodecLibrary.reset(new CodecLibrary);
 
-  myCodecLibrary.registerEncoder(HBitmapEncoder(new WindowsBitmapEncoder));
-  myCodecLibrary.registerDecoder(HBitmapDecoder(new WindowsBitmapDecoder));
+  myCodecLibrary->registerEncoder(HBitmapEncoder(new WindowsBitmapEncoder));
+  myCodecLibrary->registerDecoder(HBitmapDecoder(new WindowsBitmapDecoder));
 
   std::ifstream inFile("basic.bmp", std::ios::binary);
 
-  HBitmapDecoder myDecoder = myCodecLibrary.createDecoder("image/x-ms-bmp",inFile);
+  HBitmapDecoder myDecoder = myCodecLibrary->createDecoder("image/x-ms-bmp", inFile);
 
   HBitmapIterator myIterator = myDecoder->createIterator();
 
@@ -57,18 +61,19 @@ TEST(CreateIterator, CodecLibrary)
 
 TEST(Encoder, CodecLibrary)
 {
-  CodecLibrary myCodecLibrary;
+  std::shared_ptr<CodecLibrary> myCodecLibrary;
+  myCodecLibrary.reset(new CodecLibrary);
 
-  myCodecLibrary.registerEncoder(HBitmapEncoder(new WindowsBitmapEncoder));
-  myCodecLibrary.registerDecoder(HBitmapDecoder(new WindowsBitmapDecoder));
+  myCodecLibrary->registerEncoder(HBitmapEncoder(new WindowsBitmapEncoder));
+  myCodecLibrary->registerDecoder(HBitmapDecoder(new WindowsBitmapDecoder));
 
   std::ifstream inFile("basic.bmp", std::ios::binary);
 
-  HBitmapDecoder myDecoder = myCodecLibrary.createDecoder("image/x-ms-bmp",inFile);
+  HBitmapDecoder myDecoder = myCodecLibrary->createDecoder("image/x-ms-bmp",inFile);
 
   HBitmapIterator myIterator = myDecoder->createIterator();
 
-  HBitmapEncoder myEncoder = myCodecLibrary.createEncoder("image/x-ms-bmp", myIterator);
+  HBitmapEncoder myEncoder = myCodecLibrary->createEncoder("image/x-ms-bmp", myIterator);
 
   CHECK(myEncoder);
 
@@ -78,3 +83,59 @@ TEST(Encoder, CodecLibrary)
 
   CHECK(outFile);
 }
+
+TEST(UsingDecoratorIterators,GrayscaleDecorator)
+{
+  std::shared_ptr<CodecLibrary> myCodecLibrary;
+  myCodecLibrary.reset(new CodecLibrary);
+
+  myCodecLibrary->registerEncoder(HBitmapEncoder(new WindowsBitmapEncoder));
+  myCodecLibrary->registerDecoder(HBitmapDecoder(new WindowsBitmapDecoder));
+
+  std::ifstream inFile("basic.bmp", std::ios::binary);
+
+  HBitmapDecoder myDecoder = myCodecLibrary->createDecoder("image/x-ms-bmp",inFile);
+
+  HBitmapIterator myIterator = myDecoder->createIterator();
+  HBitmapIterator myDecorator(new GrayscaleDecorator(myIterator));
+
+  HBitmapEncoder myEncoder = myCodecLibrary->createEncoder("image/x-ms-bmp", myDecorator);
+
+  CHECK(myEncoder);
+
+  std::ofstream outFile("Grayscale.bmp", std::ios::binary);
+
+  myEncoder->writeToStream(outFile);
+
+  CHECK(outFile);
+}
+
+
+TEST(UsingDecoratorIterators,ReverseColorIterator)
+{
+  std::shared_ptr<CodecLibrary> myCodecLibrary;
+  myCodecLibrary.reset(new CodecLibrary);
+
+  myCodecLibrary->registerEncoder(HBitmapEncoder(new WindowsBitmapEncoder));
+  myCodecLibrary->registerDecoder(HBitmapDecoder(new WindowsBitmapDecoder));
+
+  std::ifstream inFile("basic.bmp", std::ios::binary);
+
+  HBitmapDecoder myDecoder = myCodecLibrary->createDecoder("image/x-ms-bmp",inFile);
+
+  HBitmapIterator myIterator = myDecoder->createIterator();
+  HBitmapIterator myDecorator(new ReverseColorDecorator(myIterator));
+
+  HBitmapEncoder myEncoder = myCodecLibrary->createEncoder("image/x-ms-bmp", myDecorator);
+
+  CHECK(myEncoder);
+
+  std::ofstream outFile("Inverse.bmp", std::ios::binary);
+
+  myEncoder->writeToStream(outFile);
+
+  CHECK(outFile);
+}
+
+
+

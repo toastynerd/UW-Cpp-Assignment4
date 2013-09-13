@@ -95,10 +95,10 @@ void WindowsBitmapHeader::setBitmapWidth(uint32_t width)
 
 void WindowsBitmapHeader::setBitmapHeight(Binary::DoubleWord height)
 {
-  bitmapWidth = height;
+  bitmapHeight = height;
 }
 
 void WindowsBitmapHeader::setBitmapHeight(uint32_t height)
 {
-  bitmapWidth = Binary::DoubleWord(height);
+  bitmapHeight = Binary::DoubleWord(height);
 }
